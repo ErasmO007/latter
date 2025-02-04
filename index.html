@@ -1,24 +1,155 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
-    <title>Do you want to be my Valentine?</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sobre Giratorio</title>
+  <style>
+    body {
+      background: #ffebee;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      /* Centrado completo usando Flexbox */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      position: relative;
+      width: 200px;
+      height: 250px; /* Altura aumentada para acomodar la solapa */
+      perspective: 1000px;
+    }
+    /* Estilos del sobre cerrado y giratorio */
+    .envelope {
+      position: relative;
+      width: 100%;
+      height: 120px;
+      animation: spin 3s linear infinite;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      overflow: visible; /* Permite que se vea la solapa */
+    }
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    .side {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border: 2px solid #333;
+      border-radius: 10px;
+      background-color: #ff6b81;
+      display: flex;
+      font-family: cursive;
+      align-items: center;
+      justify-content: center;
+    }
+    /* Solapa del sobre (simulada con pseudo-elementos) */
+    .side::before {
+      content: "";
+      position: absolute;
+      top: -20px;
+      left: 0;
+      border-left: 100px solid transparent;
+      border-right: 100px solid transparent;
+      border-bottom: 20px solid #ff6b81;
+    }
+    /* Línea discontinua que simula la unión entre la solapa y el cuerpo */
+    .side::after {
+      content: "";
+      position: absolute;
+      top: -1px;
+      left: 0;
+      width: 100%;
+      height: 0;
+      border-top: 1px dashed #000000;
+      transform: translateY(19px);
+    }
+    /* Estilos de la alerta (tarjeta) */
+    .card {
+      position: absolute;
+      top: 80px; /* Posición inicial para pantallas grandes */
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      width: 160px;
+      height: 80px;
+      background-color: #fff;
+      border: 1px solid #333;
+      border-radius: 5px;
+      padding: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      opacity: 0;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      z-index: 10;
+    }
+    .card.visible {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    /* Estilo del botón */
+    button {
+      padding: 10px;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    /* Media Query para centrar la carta en pantallas de celular */
+    @media (max-width: 600px) {
+      .card {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80%;
+        height: auto;
+        font-family: cursive;
+        padding: 20px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div id="flowerContainer"></div>
-
-    <div class="container">
-        <h1 class="header_text">Do you want to be my Valentine?</h1>
-        <div class="gif_container">
-            <img src="https://media.tenor.com/efbi1EpFlVUAAAAi/bugcat-capoo.gif" alt="Cute Capoo GIF">
-        </div>
-        <div class="buttons">
-            <button class="btn" id="yesButton" onclick="nextPage()">Yes</button>
-            <button class="btn" id="noButton" onmouseover="moveButton()">No</button>
-        </div>
+  <div class="container">
+    <!-- Sobre cerrado y giratorio (solo se usa la cara frontal) -->
+    <div class="envelope" id="envelope">
+      <div class="side">
+        TO: ALEXA
+      </div>
     </div>
+    <!-- Tarjeta de alerta con el mensaje y botón -->
+    <div class="card" id="card">
+      <p>¡Tienes un nuevo mensaje!</p>
+      <button id="messageBtn">Ir al mensaje</button>
+    </div>
+  </div>
 
-    <script src="script.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const card = document.getElementById("card");
+      const messageBtn = document.getElementById("messageBtn");
+
+      // Después de 4 segundos, muestra la alerta (carta)
+      setTimeout(() => {
+        card.classList.add("visible");
+      }, 4000);
+
+      // Al hacer click en el botón, redirige a la página del mensaje
+      messageBtn.addEventListener("click", function () {
+        window.location.href = "ask.html"; // Asegúrate de tener este archivo
+      });
+    });
+  </script>
 </body>
 </html>
